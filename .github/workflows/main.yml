@@ -14,11 +14,11 @@ jobs:
       - name: Checkout Frontend Repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Setup Node
+      # 2️⃣ Setup Node.js (Vite requires Node 20+)
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
       # 3️⃣ Install frontend dependencies
       - name: Install Frontend Dependencies
@@ -28,20 +28,22 @@ jobs:
       - name: Build Frontend
         run: npm run build
 
-      # 5️⃣ Start frontend server in background
+      # 5️⃣ Start frontend server in background (localhost:5004)
       - name: Start Frontend Server
         run: |
           npm run dev &
-          npx wait-on http://localhost:3000
+          npx wait-on http://localhost:5004 --timeout 60000
+        shell: bash
 
-      # 6️⃣ Clone Playwright repo
+      # 6️⃣ Clone your Playwright repo
       - name: Clone Playwright Test Repo
         run: git clone https://github.com/Anik-006/nifty-playwright-tests.git
 
-      # 7️⃣ Run Playwright tests
+      # 7️⃣ Install & Run Playwright Tests
       - name: Install & Run Playwright Tests
         run: |
           cd nifty-playwright-tests
           npm install
           npx playwright install --with-deps
-          npx playwright test
+          npm run test
+        shell: bash
