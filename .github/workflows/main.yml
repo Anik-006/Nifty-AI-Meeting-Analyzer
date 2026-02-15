@@ -47,4 +47,4 @@ jobs:
           npx playwright install --with-deps
           npm run test
         shell: bash
-      # End
+      # End sesh
