@@ -47,4 +47,5 @@ jobs:
           npx playwright install --with-deps
           npm run test
         shell: bash 
+      # 7️⃣ Install & Run Playwright Tests
       
