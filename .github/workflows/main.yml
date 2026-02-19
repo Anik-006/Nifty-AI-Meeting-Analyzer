@@ -53,3 +53,4 @@ jobs:
           cd nifty-playwright-tests
           npx playwright test --forbid-only
         shell: bash
+        #
