@@ -28,24 +28,28 @@ jobs:
       - name: Build Frontend
         run: npm run build
 
-      # 5️⃣ Start frontend server in background (localhost:5004)
+      # 5️⃣ Start frontend server in background and wait until ready
       - name: Start Frontend Server
         run: |
-          npm run dev &
-          npx wait-on http://localhost:5004 --timeout 60000
+          npm run dev &         # start server in background
+          npx wait-on http://localhost:5004 --timeout 120000
         shell: bash
 
-      # 6️⃣ Clone your Playwright repo
+      # 6️⃣ Clone Playwright test repo
       - name: Clone Playwright Test Repo
         run: git clone https://github.com/Anik-006/nifty-playwright-tests.git
 
-      # 7️⃣ Install & Run Playwright Tests
-      - name: Install & Run Playwright Tests
+      # 7️⃣ Install Playwright dependencies
+      - name: Install Playwright Dependencies
         run: |
           cd nifty-playwright-tests
           npm install
           npx playwright install --with-deps
-          npm run test
-        shell: bash 
-      # 7️⃣ Install & Run Playwright Tests
-      
+        shell: bash
+
+      # 8️⃣ Run Playwright tests
+      - name: Run Playwright Tests
+        run: |
+          cd nifty-playwright-tests
+          npx playwright test --forbid-only
+        shell: bash
