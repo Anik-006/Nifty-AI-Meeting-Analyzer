@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout frontend repo
+      # 1️⃣ Checkout the frontend repo
       - name: Checkout Frontend Repository
         uses: actions/checkout@v3
 
@@ -28,11 +28,18 @@ jobs:
       - name: Build Frontend
         run: npm run build
 
-      # 5️⃣ Clone Playwright test repo
+      # 5️⃣ Start frontend dev server in background and wait until ready
+      - name: Start Frontend Server
+        run: |
+          npm run dev &                            # start server in background
+          npx wait-on http://localhost:5004 --timeout 120000
+        shell: bash
+
+      # 6️⃣ Clone Playwright tests repo
       - name: Clone Playwright Test Repo
         run: git clone https://github.com/Anik-006/nifty-playwright-tests.git
 
-      # 6️⃣ Install Playwright dependencies
+      # 7️⃣ Install Playwright dependencies
       - name: Install Playwright Dependencies
         run: |
           cd nifty-playwright-tests
@@ -40,7 +47,7 @@ jobs:
           npx playwright install --with-deps
         shell: bash
 
-      # 7️⃣ Run Playwright tests
+      # 8️⃣ Run Playwright tests
       - name: Run Playwright Tests
         run: |
           cd nifty-playwright-tests
