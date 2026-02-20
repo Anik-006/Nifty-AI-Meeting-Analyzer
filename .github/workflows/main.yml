@@ -4,10 +4,14 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       # 1️⃣ Checkout frontend repo
@@ -35,7 +39,7 @@ jobs:
           npx wait-on http://localhost:5004 --timeout 120000
         shell: bash
 
-      # 6️⃣ Clone Playwright test repo
+      # 6️⃣ Clone Playwright Test Repo
       - name: Clone Playwright Test Repo
         run: git clone https://github.com/Anik-006/nifty-playwright-tests.git
 
@@ -53,3 +57,11 @@ jobs:
           cd nifty-playwright-tests
           npx playwright test --forbid-only
         shell: bash
+
+      # 9️⃣ Upload Playwright report (if needed)
+      - name: Upload Playwright Report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: nifty-playwright-tests/playwright-report/
