@@ -12,11 +12,11 @@ jobs:
     steps:
       # 1️⃣ Checkout frontend repo
       - name: Checkout Frontend Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # 2️⃣ Setup Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -28,10 +28,10 @@ jobs:
       - name: Build Frontend
         run: npm run build
 
-      # 5️⃣ Start frontend server in background
+      # 5️⃣ Start frontend server
       - name: Start Frontend Server
         run: |
-          npm run dev &                           # start server
+          npm run dev &
           npx wait-on http://localhost:5004 --timeout 120000
         shell: bash
 
@@ -53,4 +53,3 @@ jobs:
           cd nifty-playwright-tests
           npx playwright test --forbid-only
         shell: bash
-        #
